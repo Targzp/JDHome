@@ -1,4 +1,6 @@
 @mixin ellipsis {
+    /* 使用 mixin 来复用 css 代码 */
+    /* 当容器放不下文字时，使用省略号来隐藏超出文字 */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
