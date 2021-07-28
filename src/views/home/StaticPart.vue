@@ -43,20 +43,9 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../style/virables.scss';
 @import '../../style/mixins.scss';
-.wrapper{
-  /* 超出区域滚动 */
-  overflow-y: auto;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: .5rem;
-  right: 0;
-  padding: 0 .18rem .2rem .18rem;
-}
-
 .position{
   position: relative;
   padding: .16rem .24rem .16rem 0;
