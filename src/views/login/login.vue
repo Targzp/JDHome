@@ -7,14 +7,29 @@
         <div class="wrapper__input">
             <input type="password" class="wrapper__input__content" placeholder="请输入密码"/>
         </div>
-        <div class="wrapper__login-button">登录</div>
-        <div class="wrapper__login-link">立即注册</div>
+        <div class="wrapper__login-button" @click="handleLogin">登录</div>
+        <div class="wrapper__login-link" @click="handleRegister">立即注册</div>
     </div>
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
 export default {
-  name: 'login'
+  name: 'login',
+  setup () {
+    const router = useRouter()
+    const handleLogin = () => {
+      localStorage.islogin = true
+      router.push({ name: 'Home' })
+    }
+    const handleRegister = () => {
+      router.push({ name: 'register' })
+    }
+    return {
+      handleLogin,
+      handleRegister
+    }
+  }
 }
 </script>
 
@@ -42,6 +57,7 @@ export default {
         border-radius: 6px;
         border-radius: 6px;
         &__content{
+            /* 与之前 input 框不同的写法 */
             box-sizing: border-box;
             width: 100%;
             font-size: .16rem;
