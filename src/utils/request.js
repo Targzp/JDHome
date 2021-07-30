@@ -8,10 +8,11 @@ export const post = (url, data = {}) => {
         headers: {
           'Content-Type': 'application/json'
         }
-      }).then(res => {
-      resolve(res.data)
-    }, err => {
-      reject(err)
-    })
+      })
+      .then(res => {
+        resolve(res.data)
+      }, err => {
+        reject(err)
+      })
   })
 }

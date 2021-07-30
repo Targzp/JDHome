@@ -9,22 +9,29 @@
         </div>
         <div class="wrapper__login-button" @click="handleLogin">登录</div>
         <div class="wrapper__login-link" @click="handleRegister">立即注册</div>
+        <Toast v-if="toastData.showToast" :message="toastData.toastMessage"/>
     </div>
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import { post } from '../../utils/request'
+import Toast, { useToastEffect } from '../../components/Toast.vue'
+
 export default {
   name: 'login',
+  components: {
+    Toast
+  },
   setup () {
-    const data = reactive({ username: '', password: '' })
     const router = useRouter()
+    const data = reactive({ username: '', password: '' })
+    const { toastData, changeToast } = useToastEffect()
 
     const handleLogin = async () => {
       try {
-        const result = await post('/api/user/login', {
+        const result = await post('1/api/user/login', {
           username: data.username,
           password: data.password
         })
@@ -32,10 +39,10 @@ export default {
           localStorage.islogin = true
           router.push({ name: 'Home' })
         } else {
-          alert('登录失败')
+          changeToast('登录失败')
         }
       } catch (error) {
-        alert('请求失败')
+        changeToast('网络连接失败')
       }
     }
 
@@ -45,6 +52,7 @@ export default {
 
     return {
       data,
+      toastData,
       handleLogin,
       handleRegister
     }
