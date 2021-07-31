@@ -19,6 +19,7 @@ import { useRouter } from 'vue-router'
 import { post } from '../../utils/request'
 import Toast, { useToastEffect } from '../../components/Toast.vue'
 
+// 登录相关逻辑
 const useLoginEffect = (changeToast) => {
   const router = useRouter()
 
@@ -26,7 +27,12 @@ const useLoginEffect = (changeToast) => {
 
   const handleLogin = async () => {
     try {
-      const result = await post('/1api/user/login', {
+      const { username, password } = data
+      if (username === '' || password === '') {
+        changeToast('输入不能为空')
+        return
+      }
+      const result = await post('/api/user/login', {
         username: data.username,
         password: data.password
       })
@@ -50,6 +56,7 @@ const useLoginEffect = (changeToast) => {
   }
 }
 
+// 处理注册跳转
 const useRegisterEffect = () => {
   const router = useRouter()
 

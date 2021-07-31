@@ -1,29 +1,46 @@
 <template>
     <div class="nearby">
       <h3 class="nearby__title">附近店铺</h3>
-      <div class="nearby__item" v-for="item in nearbyList" :key="item.id">
+      <div class="nearby__item" v-for="item in nearbyList" :key="item._id">
         <img class="nearby__item__img" :src="item.imgUrl">
         <div class="nearby__content">
-          <div class="nearby__content__title">{{item.title}}</div>
+          <div class="nearby__content__title">{{item.name}}</div>
           <div class="nearby__content__tags">
-            <span class="nearby__content__tag" v-for="(tag,index) in item.tags" :key="index">{{tag}}</span>
+            <span class="nearby__content__tag">{{`月售 ${item.sales}`}}</span>
+            <span class="nearby__content__tag">{{`起送￥${item.expressLimit}`}}</span>
+            <span class="nearby__content__tag">{{`基础运费￥${item.expressPrice}`}}</span>
           </div>
-          <p class="nearby__content__highlight">{{item.highlight}}</p>
+          <p class="nearby__content__highlight">{{item.slogan}}</p>
         </div>
       </div>
     </div>
 </template>
 
 <script>
+import { ref } from 'vue'
+import { get } from '../../utils/request'
+
+const useNearbyListEffect = () => {
+  const nearbyList = ref([])
+  const getNearbyList = async () => {
+    const result = await get('/api/shop/hot-list')
+    if (result?.errno === 0 && result?.data?.length) {
+      nearbyList.value = result.data
+    }
+  }
+  return {
+    nearbyList,
+    getNearbyList
+  }
+}
+
 export default {
   name: 'Nearby',
   setup () {
-    const nearbyList = [
-      { id: 1, title: '沃尔玛', imgUrl: require('../../assets/near.png'), tags: ['月售1万+', '起送¥0', '基础运费¥15'], highlight: 'VIP尊享满89元减4元运费券（每月3张)' },
-      { id: 2, title: '山姆会员超市', imgUrl: require('../../assets/near.png'), tags: ['月售2000', '起送¥20', '基础运费¥5'], highlight: '联合利华洗护满10减5' },
-      { id: 3, title: '家乐福', imgUrl: require('../../assets/near.png'), tags: ['月售1000', '起送¥15', '基础运费¥0'], highlight: '热带风味冰红茶全场满50减10' },
-      { id: 4, title: '华润一家', imgUrl: require('../../assets/near.png'), tags: ['月售5000', '起送¥0', '基础运费¥3'], highlight: 'VIP尊享满200送50元代金券' }
-    ]
+    const { nearbyList, getNearbyList } = useNearbyListEffect()
+
+    getNearbyList()
+
     return {
       nearbyList
     }
