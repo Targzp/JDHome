@@ -61,7 +61,7 @@ const useRegisterEffect = () => {
   const router = useRouter()
 
   const handleRegister = () => {
-    router.push({ name: 'register' })
+    router.push({ name: 'Register' })
   }
 
   return {
@@ -70,7 +70,7 @@ const useRegisterEffect = () => {
 }
 
 export default {
-  name: 'login',
+  name: 'Login',
   components: {
     Toast
   },

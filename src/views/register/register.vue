@@ -42,7 +42,7 @@ const useRegisterEffect = (changeToast) => {
         password: data.password
       })
       if (result?.errno === 0) {
-        router.push({ name: 'login' })
+        router.push({ name: 'Login' })
       } else {
         changeToast('注册失败')
       }
@@ -63,7 +63,7 @@ const useRegisterEffect = (changeToast) => {
 const useLoginEffect = () => {
   const router = useRouter()
   const handleLoginClick = () => {
-    router.push({ name: 'login' })
+    router.push({ name: 'Login' })
   }
   return {
     handleLoginClick
@@ -71,7 +71,7 @@ const useLoginEffect = () => {
 }
 
 export default {
-  name: 'register',
+  name: 'Register',
   components: {
     Toast
   },

@@ -1,18 +1,20 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '../views/home/Home.vue'
-import login from '../views/login/login.vue'
-import register from '../views/register/register.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import('../views/home/Home.vue')
+  },
+  {
+    path: '/shop',
+    name: 'Shop',
+    component: () => import('../views/shop/Shop.vue')
   },
   {
     path: '/login',
-    name: 'login',
-    component: login,
+    name: 'Login',
+    component: () => import('../views/login/Login.vue'),
     // beforeEnter 跳转到指定路由前执行的函数
     // 以下路由拦截主要功能是防止已登录进入首页后再去跳转登录页面，如果未登录则正常跳转
     beforeEnter: (to, from, next) => {
@@ -22,8 +24,8 @@ const routes = [
   },
   {
     path: '/register',
-    name: 'register',
-    component: register,
+    name: 'Register',
+    component: () => import('../views/register/Register.vue'),
     beforeEnter: (to, from, next) => {
       const { islogin } = localStorage
       islogin ? next({ name: 'Home' }) : next()
@@ -47,8 +49,8 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const { islogin } = localStorage
   const { name } = to
-  const isLoginOrRegister = (name === 'login' || name === 'register');
-  (islogin || isLoginOrRegister) ? next() : next({ name: 'login' })
+  const isLoginOrRegister = (name === 'Login' || name === 'Register');
+  (islogin || isLoginOrRegister) ? next() : next({ name: 'Login' })
 })
 
 export default router
