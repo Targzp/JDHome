@@ -70,7 +70,7 @@ export default {
   height: .32rem;
   position: relative;
   font-size: 0.14rem;
-  color: #B7B7B7;
+  color: $search-font-color;
   margin-bottom: .12rem;
   .iconfont{
     display: inline-block;
@@ -87,7 +87,7 @@ export default {
     padding-left: .46rem;
     border: 0px;
     border-radius: 16px;
-    background: #F5F5F5;
+    background: $search-bgColor;
     &:focus{
       outline: none;
     }
