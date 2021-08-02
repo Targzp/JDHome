@@ -12,12 +12,17 @@
             <div class="product__item">
                 <img class="product__item__img" src="http://www.dell-lee.com/imgs/vue3/tomato.png">
                 <div class="product__item__info">
-                    <h4 class="product__item__title">番茄250g/份</h4>
+                    <h4 class="product__item__title">番茄250g/份番茄250g/份番茄250g/份</h4>
                     <p class="product__item__sales">月售10件</p>
                     <p class="product__item__price">
                         <span class="product__item__yen">&yen;33.6</span>
                         <span class="product__item__origin">&yen;33.6</span>
                     </p>
+                </div>
+                <div class="product__number">
+                    <span class="product__number__minus">−</span>
+                    0
+                    <span class="product__number__plus">+</span>
                 </div>
             </div>
         </div>
@@ -32,6 +37,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../style/virables.scss';
+@import '../../style/mixins.scss';
 .content {
     display: flex;
     position: absolute;
@@ -51,7 +57,7 @@ export default {
         line-height: .5rem;
         color: $content-font-color;
         &--active {
-            background: #FFF;
+            background: $bgColor;
         }
     }
 }
@@ -71,12 +77,14 @@ export default {
         }
         &__info{
             flex: 1;
+            overflow: hidden;
         }
         &__title{
             font-size: .14rem;
             line-height: .2rem;
             color: $content-font-color;
             margin: 0;
+            @include ellipsis;
         }
         &__sales{
             color: $content-font-color;
@@ -92,7 +100,7 @@ export default {
             display: inline-block;
             font-size: .14rem;
             font-weight: bold;
-            color: #E93B3B;
+            color: $hightlight-font-color;
             padding-right: .06rem;
             &::first-letter{
                 font-size: .1rem;
@@ -100,8 +108,32 @@ export default {
         }
         &__origin{
             font-size: .1rem;
-            color: #999;
+            color: $light-font-color;
             text-decoration: line-through;
+        }
+    }
+    &__number{
+        align-self: flex-end;
+        font-size: .14rem;
+        &__minus, &__plus{
+            display: inline-block;
+            width: .2rem;
+            height: .2rem;
+            line-height: .17rem;
+            border-radius: 50%;
+            font-size: .2rem;
+            text-align: center;
+        }
+        &__minus{
+            color: $medium-font-color;
+            border: .01rem solid $medium-font-color;
+            margin-right: .1rem;
+        }
+        &__plus{
+            color: $bgColor;
+            background: $buttonColor;
+            border: .01rem solid $buttonColor;
+            margin-left: .1rem;
         }
     }
 }

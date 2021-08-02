@@ -51,7 +51,7 @@ export default {
       margin-right: .16rem;
     }
     &__highlight{
-      color: red;
+      color: $hightlight-font-color;
       font-size: .13rem;
       line-height: .18rem;
       margin: .08rem 0 0 0;

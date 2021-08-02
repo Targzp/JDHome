@@ -40,7 +40,7 @@ export default {
   box-sizing: border-box;
   width: 100%;
   height: 0.49rem;
-  background: #ffffff;
+  background: $bgColor;
   box-shadow: 0 -0.01rem 0.01rem 0 $content-bgColor;
   &__item {
     flex: 1;

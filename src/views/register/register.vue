@@ -135,8 +135,8 @@ export default {
             line-height: .48rem;
             margin: .32rem .4rem .16rem .4rem;
             text-align: center;
-            color: #FFFFFF;
-            background: #0091FF;
+            color: $bgColor;
+            background: $buttonColor;
             box-shadow: 0 4px 8px 0 rgba(0,145,255,0.32);
             border-radius: 4px;
         }
