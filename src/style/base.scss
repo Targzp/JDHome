@@ -5,3 +5,8 @@ html{
 body{
     font-size: 0.12rem;
 }
+
+/* 不显示滚动条但是可滚动，但注意兼容性 */
+*::-webkit-scrollbar{
+    width: 0 !important;
+}

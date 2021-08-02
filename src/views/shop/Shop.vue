@@ -9,6 +9,7 @@
         </div>
         <div class="load" v-if="show">正在加载...</div>
         <ShopInfo v-else :item="item" :hideBorder="true"/>
+        <Content />
     </div>
 </template>
 
@@ -17,6 +18,7 @@ import { reactive, toRefs, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { get } from '../../utils/request'
 import ShopInfo from '../../components/ShopInfo.vue'
+import Content from './Content.vue'
 
 // 根据 id 获取商店详情
 const useShopInfoEffect = () => {
@@ -52,7 +54,8 @@ const useBackRouterEffect = () => {
 export default {
   name: 'Shop',
   components: {
-    ShopInfo
+    ShopInfo,
+    Content
   },
   setup () {
     const { item, show, getItemData } = useShopInfoEffect()
