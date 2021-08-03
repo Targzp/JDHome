@@ -64,7 +64,6 @@ const useCurrentListEffect = (currentTab) => {
     }
   }
 
-  // getContentData函数内部数据变化重新执行函数
   watchEffect(() => {
     getContentData()
   })
