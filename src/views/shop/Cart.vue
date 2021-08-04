@@ -1,31 +1,51 @@
 <template>
     <div class="cart">
-        <div class="check">
-            <div class="check__icon">
-                <img class="check__icon__img" src="http://www.dell-lee.com/imgs/vue3/basket.png">
-                <div class="check__icon__tag">{{total}}</div>
+      <div class="product">
+        <template v-for="item in productList" :key="item._id">
+          <div v-if="item.count > 0" class="product__item">
+            <img class="product__item__img" :src="item.imgUrl">
+            <div class="product__item__info">
+                <h4 class="product__item__title">{{item.name}}</h4>
+                <p class="product__item__price">
+                    <span class="product__item__yen">&yen;{{item.price}}</span>
+                    <span class="product__item__origin">&yen;{{item.oldPrice}}</span>
+                </p>
             </div>
-            <div class="check__info">
-                总计：<span class="check__info__price">&yen;{{price}}</span>
+            <div class="product__number">
+                <span class="product__number__minus"
+                @click="() => { changeCartItemInfo(shopId, item._id, item, -1) }">−</span>
+                {{item?.count || 0}}
+                <span class="product__number__plus"
+                @click="() => { changeCartItemInfo(shopId, item._id, item, 1) }">+</span>
             </div>
-            <div class="check__btn">去结算</div>
-        </div>
+          </div>
+        </template>
+      </div>
+      <div class="check">
+          <div class="check__icon">
+              <img class="check__icon__img" src="http://www.dell-lee.com/imgs/vue3/basket.png">
+              <div class="check__icon__tag">{{total}}</div>
+          </div>
+          <div class="check__info">
+              总计：<span class="check__info__price">&yen;{{price}}</span>
+          </div>
+          <div class="check__btn">去结算</div>
+      </div>
     </div>
 </template>
 
 <script>
-import { toRefs, computed } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
+import { useCommonCartEffect } from './commonCartEffect'
 
-const useCartEffect = () => {
+const useCartEffect = (shopId) => {
   const store = useStore()
-  const route = useRoute()
-  const shopId = route.params.id
-  const { cartList } = toRefs(store.state)
+  const cartList = store.state.cartList
 
   const total = computed(() => {
-    const productList = cartList.value[shopId]
+    const productList = cartList[shopId]
     let count = 0
     if (productList) {
       for (const i in productList) {
@@ -37,7 +57,7 @@ const useCartEffect = () => {
   })
 
   const price = computed(() => {
-    const productList = cartList.value[shopId]
+    const productList = cartList[shopId]
     let count = 0
     if (productList) {
       for (const i in productList) {
@@ -48,26 +68,40 @@ const useCartEffect = () => {
     return count.toFixed(1)
   })
 
+  const productList = computed(() => {
+    const productList = cartList[shopId] || []
+    return productList
+  })
+
   return {
     total,
-    price
+    price,
+    shopId,
+    productList
   }
 }
 
 export default {
   name: 'Cart',
   setup () {
-    const { total, price } = useCartEffect()
+    const route = useRoute()
+    const shopId = route.params.id
+    const { total, price, productList } = useCartEffect(shopId)
+    const { changeCartItemInfo } = useCommonCartEffect()
     return {
       total,
-      price
+      price,
+      shopId,
+      productList,
+      changeCartItemInfo
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../style/virables.scss';
+@import '../../style/mixins.scss';
 .cart {
     height: .5rem;
     position: absolute;
@@ -122,6 +156,81 @@ export default {
         line-height: .5rem;
         color: $bgColor;
         background: #4FB0F9;
+    }
+}
+
+.product {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: .49rem;
+    background: $bgColor;
+    overflow-y: scroll;
+    &__item {
+        display: flex;
+        padding: .12rem 0;
+        &__img {
+            flex: .5;
+            object-fit: contain;
+            width: .46rem;
+            height: .46rem;
+            padding-right: .16rem
+        }
+        &__info{
+            flex: 1;
+            overflow: hidden;
+        }
+        &__title{
+            font-size: .14rem;
+            line-height: .2rem;
+            color: $content-font-color;
+            margin: 0;
+            @include ellipsis;
+        }
+        &__price{
+            line-height: .2rem;
+            margin: .06rem 0 0 0;
+        }
+        &__yen{
+            display: inline-block;
+            font-size: .14rem;
+            font-weight: bold;
+            color: $hightlight-font-color;
+            padding-right: .06rem;
+            &::first-letter{
+                font-size: .1rem;
+            }
+        }
+        &__origin{
+            font-size: .1rem;
+            color: $light-font-color;
+            text-decoration: line-through;
+        }
+    }
+    &__number{
+        flex: .5;
+        align-self: flex-end;
+        font-size: .14rem;
+        &__minus, &__plus{
+            display: inline-block;
+            width: .15rem;
+            line-height: .15rem;
+            border-radius: 50%;
+            font-size: .15rem;
+            text-align: center;
+            transform: scale(1.3);
+        }
+        &__minus{
+            color: $medium-font-color;
+            border: .01rem solid $medium-font-color;
+            margin-right: .1rem;
+        }
+        &__plus{
+            color: $bgColor;
+            background: $buttonColor;
+            border: .01rem solid $buttonColor;
+            margin-left: .1rem;
+        }
     }
 }
 </style>
