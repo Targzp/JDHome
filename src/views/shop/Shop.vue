@@ -10,6 +10,7 @@
         <div class="load" v-if="show">正在加载...</div>
         <ShopInfo v-else :item="item" :hideBorder="true"/>
         <Content />
+        <Cart />
     </div>
 </template>
 
@@ -19,6 +20,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { get } from '../../utils/request'
 import ShopInfo from '../../components/ShopInfo.vue'
 import Content from './Content.vue'
+import Cart from './Cart.vue'
 
 // 根据 id 获取商店详情
 const useShopInfoEffect = () => {
@@ -55,7 +57,8 @@ export default {
   name: 'Shop',
   components: {
     ShopInfo,
-    Content
+    Content,
+    Cart
   },
   setup () {
     const { item, show, getItemData } = useShopInfoEffect()

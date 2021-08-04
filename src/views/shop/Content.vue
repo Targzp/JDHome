@@ -19,9 +19,11 @@
                     </p>
                 </div>
                 <div class="product__number">
-                    <span class="product__number__minus">−</span>
-                    0
-                    <span class="product__number__plus">+</span>
+                    <span class="product__number__minus"
+                    @click="() => { changeCartItemInfo(shopId, item._id, item, -1) }">−</span>
+                    {{cartList?.[shopId]?.[item._id]?.count || 0}}
+                    <span class="product__number__plus"
+                    @click="() => { changeCartItemInfo(shopId, item._id, item, 1) }">+</span>
                 </div>
             </div>
         </div>
@@ -31,6 +33,7 @@
 <script>
 import { reactive, ref, toRefs, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 import { get } from '../../utils/request'
 
 const categories = [
@@ -52,9 +55,7 @@ const useTabEffect = () => {
 }
 
 // 列表内容相关的逻辑
-const useCurrentListEffect = (currentTab) => {
-  const route = useRoute()
-  const shopId = route.params.id
+const useCurrentListEffect = (currentTab, shopId) => {
   const content = reactive({ list: [] })
 
   const getContentData = async () => {
@@ -72,21 +73,48 @@ const useCurrentListEffect = (currentTab) => {
   const { list } = toRefs(content)
 
   return {
-    list
+    list,
+    shopId
+  }
+}
+
+// 购物车相关逻辑
+const useCartEffect = () => {
+  const store = useStore()
+  const { cartList } = toRefs(store.state)
+
+  const changeCartItemInfo = (shopId, productId, productInfo, num) => {
+    store.commit('changeCartItemInfo', {
+      shopId,
+      productId,
+      productInfo,
+      num
+    })
+  }
+
+  return {
+    cartList,
+    changeCartItemInfo
   }
 }
 
 export default {
   name: 'Content',
   setup () {
+    const route = useRoute()
+    const shopId = route.params.id
     const { currentTab, handleTabClick } = useTabEffect()
-    const { list } = useCurrentListEffect(currentTab)
+    const { list } = useCurrentListEffect(currentTab, shopId)
+    const { cartList, changeCartItemInfo } = useCartEffect()
 
     return {
       categories,
       list,
       currentTab,
-      handleTabClick
+      handleTabClick,
+      cartList,
+      shopId,
+      changeCartItemInfo
     }
   }
 }
@@ -174,12 +202,12 @@ export default {
         font-size: .14rem;
         &__minus, &__plus{
             display: inline-block;
-            width: .2rem;
-            height: .2rem;
-            line-height: .17rem;
+            width: .15rem;
+            line-height: .15rem;
             border-radius: 50%;
-            font-size: .2rem;
+            font-size: .15rem;
             text-align: center;
+            transform: scale(1.3);
         }
         &__minus{
             color: $medium-font-color;
