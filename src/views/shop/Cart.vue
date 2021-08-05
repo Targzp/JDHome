@@ -1,8 +1,17 @@
 <template>
     <div class="cart">
       <div class="product">
+        <div class="product__header">
+
+        </div>
         <template v-for="item in productList" :key="item._id">
           <div v-if="item.count > 0" class="product__item">
+            <div
+              class="product__item__checked iconfont"
+              v-html="item.check?'&#xe618;':'&#xe619;'"
+              @click="() => changeCartItemChecked(shopId, item._id)"
+            >
+            </div>
             <img class="product__item__img" :src="item.imgUrl">
             <div class="product__item__info">
                 <h4 class="product__item__title">{{item.name}}</h4>
@@ -62,7 +71,9 @@ const useCartEffect = (shopId) => {
     if (productList) {
       for (const i in productList) {
         const product = productList[i]
-        count += (product.price * product.count)
+        if (product.check) {
+          count += (product.price * product.count)
+        }
       }
     }
     return count.toFixed(1)
@@ -73,11 +84,18 @@ const useCartEffect = (shopId) => {
     return productList
   })
 
+  const changeCartItemChecked = (shopId, productId) => {
+    store.commit('changeCartItemChecked', {
+      shopId,
+      productId
+    })
+  }
+
   return {
     total,
     price,
-    shopId,
-    productList
+    productList,
+    changeCartItemChecked
   }
 }
 
@@ -86,14 +104,15 @@ export default {
   setup () {
     const route = useRoute()
     const shopId = route.params.id
-    const { total, price, productList } = useCartEffect(shopId)
+    const { total, price, productList, changeCartItemChecked } = useCartEffect(shopId)
     const { changeCartItemInfo } = useCommonCartEffect()
     return {
       total,
       price,
       shopId,
       productList,
-      changeCartItemInfo
+      changeCartItemInfo,
+      changeCartItemChecked
     }
   }
 }
@@ -166,15 +185,24 @@ export default {
     bottom: .49rem;
     background: $bgColor;
     overflow-y: scroll;
+    &__header{
+      height: .52rem;
+      border-bottom: .01rem solid $content-bgColor;
+    }
     &__item {
         display: flex;
         padding: .12rem 0;
+        &__checked{
+          align-self: center;
+          color: #0091FF;
+          font-size: .2rem;
+          padding-left: .18rem;
+        }
         &__img {
-            flex: .5;
             object-fit: contain;
             width: .46rem;
             height: .46rem;
-            padding-right: .16rem
+            padding: 0 .16rem;
         }
         &__info{
             flex: 1;
