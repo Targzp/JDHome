@@ -76,7 +76,7 @@ const useCartEffect = (shopId) => {
 
   // 计算进入购物车的所有商品的总数
   const total = computed(() => {
-    const productList = cartList[shopId]
+    const productList = cartList[shopId]?.productList || []
     let count = 0
     if (productList) {
       for (const i in productList) {
@@ -89,7 +89,7 @@ const useCartEffect = (shopId) => {
 
   // 计算进入购物车的所有商品的总价，且只计算选中状态的商品
   const price = computed(() => {
-    const productList = cartList[shopId]
+    const productList = cartList[shopId]?.productList || []
     let count = 0
     if (productList) {
       for (const i in productList) {
@@ -104,7 +104,7 @@ const useCartEffect = (shopId) => {
 
   // 根据购物车内所有商品的选中状态，判断是否为全选。默认为全选状态
   const allChecked = computed(() => {
-    const productList = cartList[shopId]
+    const productList = cartList[shopId]?.productList || []
     let result = true
     if (productList) {
       for (const i in productList) {
@@ -119,7 +119,7 @@ const useCartEffect = (shopId) => {
 
   // 获取对应商铺内的进入购物车的所有商品
   const productList = computed(() => {
-    const productList = cartList[shopId] || []
+    const productList = cartList[shopId]?.productList || []
     return productList
   })
 

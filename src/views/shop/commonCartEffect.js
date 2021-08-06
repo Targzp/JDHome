@@ -1,6 +1,6 @@
 import { toRefs } from 'vue'
 import { useStore } from 'vuex'
-// 购物车相关逻辑
+// 购物车相关通用逻辑
 export const useCommonCartEffect = () => {
   const store = useStore()
   const {

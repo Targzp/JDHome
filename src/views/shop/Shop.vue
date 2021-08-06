@@ -9,7 +9,7 @@
         </div>
         <div class="load" v-if="show">正在加载...</div>
         <ShopInfo v-else :item="item" :hideBorder="true"/>
-        <Content />
+        <Content :shopName="item.name"/>
         <Cart />
     </div>
 </template>
