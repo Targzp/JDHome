@@ -1,6 +1,4 @@
 <template>
-    <div class="cart">
-      <div class="mask" v-if="showCart" @click="handleCartShowChange"></div>
       <transition>
         <div class="product" v-if="showCart">
           <div class="product__header">
@@ -43,7 +41,10 @@
             </div>
           </template>
         </div>
-      </transition>
+    </transition>
+    <div class="mask" v-if="showCart"
+        @click="handleCartShowChange" />
+    <div class="cart">
       <div class="check">
           <div class="check__icon">
               <img
@@ -55,7 +56,9 @@
           <div class="check__info">
               总计：<span class="check__info__price">&yen;{{price}}</span>
           </div>
-          <div class="check__btn">去结算</div>
+          <div class="check__btn">
+            <router-link :to="{name: 'Home'}">去结算</router-link>
+          </div>
       </div>
     </div>
 </template>
@@ -66,10 +69,12 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { useCommonCartEffect } from './commonCartEffect'
 
+// 购物车相关逻辑
 const useCartEffect = (shopId) => {
   const store = useStore()
   const cartList = store.state.cartList
 
+  // 计算进入购物车的所有商品的总数
   const total = computed(() => {
     const productList = cartList[shopId]
     let count = 0
@@ -82,6 +87,7 @@ const useCartEffect = (shopId) => {
     return count
   })
 
+  // 计算进入购物车的所有商品的总价，且只计算选中状态的商品
   const price = computed(() => {
     const productList = cartList[shopId]
     let count = 0
@@ -96,6 +102,7 @@ const useCartEffect = (shopId) => {
     return count.toFixed(1)
   })
 
+  // 根据购物车内所有商品的选中状态，判断是否为全选。默认为全选状态
   const allChecked = computed(() => {
     const productList = cartList[shopId]
     let result = true
@@ -110,11 +117,13 @@ const useCartEffect = (shopId) => {
     return result
   })
 
+  // 获取对应商铺内的进入购物车的所有商品
   const productList = computed(() => {
     const productList = cartList[shopId] || []
     return productList
   })
 
+  // 改变购物车中某商品的选中状态。shopId 为商店 ID，productId 为商品 ID
   const changeCartItemChecked = (shopId, productId) => {
     store.commit('changeCartItemChecked', {
       shopId,
@@ -122,12 +131,14 @@ const useCartEffect = (shopId) => {
     })
   }
 
+  // 将添加进购物车中的商品删除。shopId 为商店 ID
   const cleanCartProducts = (shopId) => {
     store.commit('cleanCartProducts', {
       shopId
     })
   }
 
+  // 将购物车中的所有商品切换为选中状态。shopId 为商店 ID
   const setCartItemsChecked = (shopId) => {
     store.commit('setCartItemsChecked', {
       shopId
@@ -145,17 +156,27 @@ const useCartEffect = (shopId) => {
   }
 }
 
+// 展示隐藏购物车逻辑
+const toggleCartEffect = () => {
+  const showCart = ref(false)
+  const handleCartShowChange = () => {
+    showCart.value = !showCart.value
+  }
+
+  return {
+    showCart,
+    handleCartShowChange
+  }
+}
+
 export default {
   name: 'Cart',
   setup () {
     const route = useRoute()
     const shopId = route.params.id
-    const showCart = ref(false)
     const { total, price, productList, allChecked, changeCartItemChecked, cleanCartProducts, setCartItemsChecked } = useCartEffect(shopId)
     const { changeCartItemInfo } = useCommonCartEffect()
-    const handleCartShowChange = () => {
-      showCart.value = !showCart.value
-    }
+    const { showCart, handleCartShowChange } = toggleCartEffect()
 
     return {
       total,
@@ -185,7 +206,7 @@ export default {
     bottom: 0;
     border-top: .01rem solid $content-bgColor;
     background: $bgColor;
-    z-index: 10;
+    z-index: 3;
 }
 
 .mask {
@@ -195,7 +216,7 @@ export default {
   bottom: 50px;
   top: 0;
   background: rgba(0, 0, 0, .5);
-  z-index: -9;
+  z-index: 1;
 }
 
 .check {
@@ -241,8 +262,11 @@ export default {
         text-align: center;
         font-size: .14rem;
         line-height: .5rem;
-        color: $bgColor;
         background: #4FB0F9;
+        > a{
+          text-decoration: none;
+          color: $bgColor;
+        }
     }
 }
 
@@ -253,15 +277,15 @@ export default {
     bottom: .49rem;
     background: $bgColor;
     overflow-y: scroll;
+    z-index: 2;
     &__header{
       display: flex;
       justify-content: space-between;
       line-height: .52rem;
       border-bottom: .01rem solid $content-bgColor;
-      z-index: -5;
       &__icon{
         font-size: .2rem;
-        color: #0091FF;
+        color: $buttonColor;
         margin: 0 .084rem 0 .18rem;
         vertical-align: bottom;
       }
@@ -280,7 +304,7 @@ export default {
         padding: .12rem 0;
         &__checked{
           align-self: center;
-          color: #0091FF;
+          color: $buttonColor;
           font-size: .2rem;
           padding-left: .18rem;
         }
@@ -323,7 +347,7 @@ export default {
     }
     &__number{
         flex: .5;
-        align-self: flex-end;
+        align-self: center;
         font-size: .14rem;
         &__minus, &__plus{
             display: inline-block;
@@ -348,11 +372,12 @@ export default {
     }
 }
 
-/* .v-enter-from,.v-leave-to{
-  bottom: -.49rem;
+.v-enter-from,.v-leave-to{
+  transform: translateY(100%);
+  transform-origin: top center;
 }
 
 .v-enter-active,.v-leave-active{
-  transition: bottom 200ms linear;
-} */
+  transition: transform 150ms linear;
+}
 </style>
