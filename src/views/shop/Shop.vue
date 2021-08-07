@@ -75,7 +75,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../style/virables.scss';
 .wrapper{
   padding: 0 .18rem;
