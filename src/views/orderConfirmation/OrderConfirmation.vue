@@ -30,6 +30,12 @@
                 </div>
             </div>
         </div>
+        <div class="order">
+            <div class="order__price">
+                实付金额 &yen;<span class="order__price__number">{{calculations.price}}</span>
+            </div>
+            <div class="order__btn">提交订单</div>
+        </div>
     </div>
 </template>
 
@@ -41,9 +47,10 @@ export default {
   setup () {
     const route = useRoute()
     const shopId = route.params.id
-    const { productList, shopName } = useCommonCartEffect(shopId)
+    const { calculations, productList, shopName } = useCommonCartEffect(shopId)
 
     return {
+      calculations,
       productList,
       shopName
     }
@@ -57,7 +64,7 @@ export default {
 .wrapper{
     position: absolute;
     top: 0;
-    bottom: .49rem;
+    bottom: 0;
     left: 0;
     right: 0;
     background-color: rgb(248,248,248);
@@ -166,6 +173,31 @@ export default {
                 font-size: .1rem;
             }
         }
+    }
+}
+
+.order {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: .14rem;
+    line-height: .49rem;
+    display: flex;
+    background-color: $bgColor;
+    &__price {
+        flex: 1;
+        padding: 0 .02rem 0 .24rem;
+        &__number{
+            font-size: .16rem;
+            font-weight: bold;
+        }
+    }
+    &__btn{
+        flex: 0 1 .98rem;
+        text-align: center;
+        color: $bgColor;
+        background-color: #4FB0F9;
     }
 }
 </style>

@@ -21,7 +21,7 @@
                 <div class="product__number">
                     <span class="product__number__minus"
                     @click="() => { changeCartItem(shopId, item._id, item, -1, shopName) }">−</span>
-                    {{getProductCartCount(shopId, item._id)}}
+                    {{getProductCartCount(item._id)}}
                     <span class="product__number__plus"
                     @click="() => { changeCartItem(shopId, item._id, item, 1, shopName) }">+</span>
                 </div>
@@ -79,9 +79,9 @@ const useCurrentListEffect = (currentTab, shopId) => {
 }
 
 // 购物车相关逻辑
-const useCartEffect = () => {
+const useCartEffect = (shopId) => {
   const store = useStore()
-  const { changeCartItemInfo, cartList } = useCommonCartEffect()
+  const { changeCartItemInfo, productList } = useCommonCartEffect(shopId)
   const changeShopName = (shopId, shopName) => {
     store.commit('changeShopName', {
       shopId,
@@ -94,12 +94,11 @@ const useCartEffect = () => {
     changeShopName(shopId, shopName)
   }
 
-  const getProductCartCount = (shopId, productId) => {
-    return cartList?.[shopId]?.productList?.[productId]?.count || 0
+  const getProductCartCount = (productId) => {
+    return productList.value?.[productId]?.count || 0
   }
 
   return {
-    cartList,
     changeCartItem,
     getProductCartCount
   }
@@ -113,14 +112,13 @@ export default {
     const shopId = route.params.id
     const { currentTab, handleTabClick } = useTabEffect()
     const { list } = useCurrentListEffect(currentTab, shopId)
-    const { cartList, changeCartItem, getProductCartCount } = useCartEffect()
+    const { changeCartItem, getProductCartCount } = useCartEffect(shopId)
 
     return {
       categories,
       list,
       currentTab,
       handleTabClick,
-      cartList,
       shopId,
       changeCartItem,
       getProductCartCount

@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { reactive, computed } from 'vue'
+import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { useCommonCartEffect } from '../../effects/cartEffects'
@@ -72,28 +72,7 @@ import { useCommonCartEffect } from '../../effects/cartEffects'
 // 购物车相关逻辑
 const useCartEffect = (shopId) => {
   const store = useStore()
-  const { cartList, productList, changeCartItemInfo } = useCommonCartEffect(shopId)
-
-  // 计算进入购物车的所有商品的总数和总价
-  // 根据购物车内所有商品的选中状态，判断是否为全选。默认为全选状态
-  const calculations = computed(() => {
-    const productList = cartList[shopId]?.productList || []
-    const result = { total: 0, price: 0, allChecked: true }
-    if (productList) {
-      for (const i in productList) {
-        const product = productList[i]
-        result.total += product.count
-        if (product.check) {
-          result.price += (product.price * product.count)
-        }
-        if (!product.check) {
-          result.allChecked = false
-        }
-      }
-    }
-    result.price = result.price.toFixed(1)
-    return result
-  })
+  const { productList, calculations, changeCartItemInfo } = useCommonCartEffect(shopId)
 
   // 改变购物车中某商品的选中状态。shopId 为商店 ID，productId 为商品 ID
   const changeCartItemChecked = (shopId, productId) => {
@@ -150,7 +129,6 @@ export default {
     const shopId = route.params.id
     const { showCart, handleCartShowChange } = toggleCartEffect()
     const { calculations, productList, changeCartItemInfo, changeCartItemChecked, cleanCartProducts, setCartItemsChecked } = useCartEffect(shopId)
-
     return {
       calculations,
       shopId,

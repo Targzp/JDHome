@@ -17,7 +17,7 @@ export const useCommonCartEffect = (shopId) => {
 
   // 获取对应商铺内的进入购物车的所有商品
   const productList = computed(() => {
-    const productList = cartList[shopId]?.productList || []
+    const productList = cartList[shopId]?.productList || {}
     return productList
   })
 
@@ -27,10 +27,32 @@ export const useCommonCartEffect = (shopId) => {
     return shopName
   })
 
+  // 计算进入购物车的所有商品的总数和总价
+  // 根据购物车内所有商品的选中状态，判断是否为全选。默认为全选状态
+  const calculations = computed(() => {
+    const productList = cartList[shopId]?.productList || {}
+    const result = { total: 0, price: 0, allChecked: true }
+    if (productList) {
+      for (const i in productList) {
+        const product = productList[i]
+        result.total += product.count
+        if (product.check) {
+          result.price += (product.price * product.count)
+        }
+        if (!product.check) {
+          result.allChecked = false
+        }
+      }
+    }
+    result.price = result.price.toFixed(1)
+    return result
+  })
+
   return {
     cartList,
     shopName,
     productList,
+    calculations,
     changeCartItemInfo
   }
 }
