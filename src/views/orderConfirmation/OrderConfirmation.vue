@@ -15,12 +15,39 @@
                 <div class="iconfont top__receiver__enter">&#xe653;</div>
             </div>
         </div>
+        <div class="product">
+            <div class="product__title">{{shopName}}</div>
+            <div class="product__list">
+                <div class="product__item" v-for="item in productList" :key="item._id">
+                    <img class="product__item__img" :src="item.imgUrl">
+                    <div class="product__item__info">
+                        <h4 class="product__item__title">{{item.name}}</h4>
+                        <p class="product__item__price">
+                            <span class="product__item__singleprice">&yen;{{item.price}} × {{item.count}}</span>
+                            <span class="product__item__totalprice">&yen;{{(item.price * item.count).toFixed(1)}}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+import { useRoute } from 'vue-router'
+import { useCommonCartEffect } from '../../effects/cartEffects'
 export default {
-  name: 'OrderConfirmation'
+  name: 'OrderConfirmation',
+  setup () {
+    const route = useRoute()
+    const shopId = route.params.id
+    const { productList, shopName } = useCommonCartEffect(shopId)
+
+    return {
+      productList,
+      shopName
+    }
+  }
 }
 </script>
 
@@ -87,6 +114,57 @@ export default {
             transform: translateY(-50%);
             font-size: .20rem;
             color: $medium-font-color;
+        }
+    }
+}
+
+.product {
+    margin: .16rem .18rem 0 .18rem;
+    background-color: $bgColor;
+    border-radius: .04rem;
+    &__title{
+        font-size: .16rem;
+        line-height: .22rem;
+        font-weight: bold;
+        padding: .16rem 0 .16rem .16rem;
+    }
+    &__item {
+        display: flex;
+        padding: 0 .16rem .16rem .16rem;
+        &__img {
+            width: .46rem;
+            height: .46rem;
+            padding-right: .16rem;
+        }
+        &__info{
+            flex: 1;
+            overflow: hidden;
+        }
+        &__title{
+            font-size: .14rem;
+            line-height: .2rem;
+            color: $content-font-color;
+            margin: 0;
+            @include ellipsis;
+        }
+        &__price{
+            display: flex;
+            justify-content: space-between;
+            line-height: .2rem;
+            margin: 0;
+        }
+        &__singleprice{
+            font-size: .14rem;
+            color: $hightlight-font-color;
+            &::first-letter{
+                font-size: .1rem;
+            }
+        }
+        &__totalprice{
+            font-size: .14rem;
+            &::first-letter{
+                font-size: .1rem;
+            }
         }
     }
 }
