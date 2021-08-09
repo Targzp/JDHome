@@ -41,7 +41,7 @@ export default {
   padding: 0 0.18rem;
   box-sizing: border-box;
   width: 100%;
-  height: 0.49rem;
+  height: .49rem;
   background: $bgColor;
   box-shadow: 0 -0.01rem 0.01rem 0 $content-bgColor;
   &__item {

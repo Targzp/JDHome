@@ -16,11 +16,12 @@
 
 <script>
 import { reactive, toRefs, ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { get } from '../../utils/request'
 import ShopInfo from '../../components/ShopInfo.vue'
 import Content from './Content.vue'
 import Cart from './Cart.vue'
+import { useBackRouterEffect } from '../../effects/backEffects'
 
 // 根据 id 获取商店详情
 const useShopInfoEffect = () => {
@@ -39,17 +40,6 @@ const useShopInfoEffect = () => {
     item,
     show,
     getItemData
-  }
-}
-
-// 点击回退逻辑
-const useBackRouterEffect = () => {
-  const router = useRouter()
-  const handleBackClick = () => {
-    router.back()
-  }
-  return {
-    handleBackClick
   }
 }
 
