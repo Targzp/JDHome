@@ -4,7 +4,7 @@
     <div
       v-for="(item, index) in dockerList"
       :key="index"
-      :class="{'docker__item':true,'docker__item--active':index===0}"
+      :class="{'docker__item':true,'docker__item--active':index===currentIndex}"
     >
       <router-link :to="item.to">
         <div class="iconfont" v-html="item.icon"></div>
@@ -17,11 +17,12 @@
 <script>
 export default {
   name: 'Docker',
+  props: ['currentIndex'],
   setup () {
     const dockerList = [
       { icon: '&#xe601;', text: '首页', to: { name: 'Home' } },
       { icon: '&#xe602;', text: '购物车', to: { name: 'CartList' } },
-      { icon: '&#xe600;', text: '订单', to: { name: 'Home' } },
+      { icon: '&#xe600;', text: '订单', to: { name: 'OrderList' } },
       { icon: '&#xe603;', text: '我的', to: { name: 'Home' } }
     ]
     return {
@@ -32,7 +33,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/virables.scss";
+@import "../style/virables.scss";
 .docker {
   display: flex;
   position: absolute;
@@ -50,10 +51,6 @@ export default {
     a {
       color: $content-font-color;
       text-decoration: none;
-      &:active{
-        // 去除点击时的蓝色背景
-        -webkit-tap-highlight-color:rgba(0,0,0,0);
-      }
     }
     .iconfont {
       margin: 0.07rem 0 0.02rem 0;
@@ -66,8 +63,7 @@ export default {
     }
   }
   &__title {
-    font-size: 0.2rem;
-    transform: scale(0.5, 0.5);
+    font-size: 0.1rem;
     transform-origin: center top;
   }
 }

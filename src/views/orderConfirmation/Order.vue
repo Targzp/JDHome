@@ -30,46 +30,64 @@ import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { post } from '../../utils/request'
 import { useCommonCartEffect } from '../../effects/cartEffects'
+
+//  下单相关逻辑
+const useMakeOrderEffect = () => {
+  const router = useRouter()
+  const route = useRoute()
+  let shopId = route.params.id
+  const { shopName, calculations, productList, cleanCartProducts } = useCommonCartEffect(shopId)
+  const handleConfirmOrder = async (isCanceled) => {
+    const products = []
+    shopId = parseInt(shopId, 10)
+    for (const i in productList.value) {
+      const product = productList.value[i]
+      products.push({
+        id: parseInt(product._id, 10),
+        num: product.count
+      })
+    }
+    try {
+      const result = await post('/api/order', {
+        addressId: 1,
+        shopId,
+        shopName: shopName.value,
+        isCanceled,
+        products
+      })
+      if (result?.errno === 0) {
+        cleanCartProducts(shopId)
+        router.push({ name: 'OrderList' })
+      }
+    } catch (e) {
+      // 提示下单失败，使用 toast 组件
+    }
+  }
+
+  return {
+    calculations,
+    handleConfirmOrder
+  }
+}
+
+// 确认支付/取消订单弹窗展示相关的逻辑
+const useShowMaskEffect = () => {
+  const showConfirm = ref(false)
+  const handleSubmitClick = () => {
+    showConfirm.value = !showConfirm.value
+  }
+
+  return {
+    showConfirm,
+    handleSubmitClick
+  }
+}
+
 export default {
   name: 'Order',
   setup () {
-    const router = useRouter()
-    const route = useRoute()
-    let shopId = route.params.id
-    const { shopName, calculations, productList, cleanCartProducts } = useCommonCartEffect(shopId)
-
-    const showConfirm = ref(false)
-
-    const handleSubmitClick = () => {
-      showConfirm.value = !showConfirm.value
-    }
-
-    const handleConfirmOrder = async (isCanceled) => {
-      const products = []
-      shopId = parseInt(shopId, 10)
-      for (const i in productList.value) {
-        const product = productList.value[i]
-        products.push({
-          id: parseInt(product._id, 10),
-          num: product.count
-        })
-      }
-      try {
-        const result = await post('/api/order', {
-          addressId: 1,
-          shopId,
-          shopName: shopName.value,
-          isCanceled,
-          products
-        })
-        if (result?.errno === 0) {
-          cleanCartProducts(shopId)
-          router.push({ name: 'Home' })
-        }
-      } catch (e) {
-        // 提示下单失败，使用 toast 组件
-      }
-    }
+    const { showConfirm, handleSubmitClick } = useShowMaskEffect()
+    const { calculations, handleConfirmOrder } = useMakeOrderEffect()
 
     return {
       showConfirm,

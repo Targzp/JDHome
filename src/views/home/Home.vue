@@ -3,13 +3,13 @@
     <StaticPart />
     <Nearby />
   </div>
-  <Docker />
+  <Docker :currentIndex="0"/>
 </template>
 
 <script>
 import StaticPart from './StaticPart'
 import Nearby from './Nearby'
-import Docker from './Docker'
+import Docker from '../../components/Docker.vue'
 export default {
   name: 'Home',
   components: {
@@ -28,8 +28,8 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  bottom: .5rem;
+  bottom: .49rem;
   right: 0;
-  padding: 0 .18rem .2rem .18rem;
+  padding: 0 .18rem 0 .18rem;
 }
 </style>
