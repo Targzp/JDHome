@@ -16,7 +16,7 @@
             >清空购物车</div>
           </div>
           <template v-for="item in productList" :key="item._id">
-            <div v-if="item.count > 0" class="product__item">
+            <div class="product__item">
               <div
                 class="product__item__checked iconfont"
                 v-html="item.check?'&#xe618;':'&#xe619;'"
@@ -56,8 +56,8 @@
           <div class="check__info">
               总计：<span class="check__info__price">&yen;{{calculations.price}}</span>
           </div>
-          <div class="check__btn">
-            <router-link :to="{path: `/OrderConfirmation/${shopId}`}">去结算</router-link>
+          <div :class="{'check__btn': true,'check__btn--active': calculations.total}">
+            <router-link :to="{path: calculations.total?`/OrderConfirmation/${shopId}`:$route.path}">去结算</router-link>
           </div>
       </div>
     </div>
@@ -72,20 +72,13 @@ import { useCommonCartEffect } from '../../effects/cartEffects'
 // 购物车相关逻辑
 const useCartEffect = (shopId) => {
   const store = useStore()
-  const { productList, calculations, changeCartItemInfo } = useCommonCartEffect(shopId)
+  const { productList, calculations, changeCartItemInfo, cleanCartProducts } = useCommonCartEffect(shopId)
 
   // 改变购物车中某商品的选中状态。shopId 为商店 ID，productId 为商品 ID
   const changeCartItemChecked = (shopId, productId) => {
     store.commit('changeCartItemChecked', {
       shopId,
       productId
-    })
-  }
-
-  // 将添加进购物车中的商品删除。shopId 为商店 ID
-  const cleanCartProducts = (shopId) => {
-    store.commit('cleanCartProducts', {
-      shopId
     })
   }
 
@@ -211,8 +204,11 @@ export default {
         text-align: center;
         font-size: .14rem;
         line-height: .5rem;
-        background: #4FB0F9;
-        > a{
+        background: $light-font-color;
+        &--active {
+          background: #4FB0F9;
+        }
+        > a {
           text-decoration: none;
           color: $bgColor;
         }

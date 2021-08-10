@@ -10,3 +10,8 @@ body{
 *::-webkit-scrollbar{
     width: 0 !important;
 }
+
+a:active {
+    // 去除点击时的蓝色背景
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}

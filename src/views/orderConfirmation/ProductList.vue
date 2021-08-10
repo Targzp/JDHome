@@ -3,7 +3,7 @@
         <div class="product__title">{{shopName}}</div>
         <div class="product__list">
             <template v-for="item in productList" :key="item._id">
-                <div class="product__item" v-if="item.count > 0">
+                <div class="product__item">
                     <img class="product__item__img" :src="item.imgUrl">
                     <div class="product__item__info">
                         <h4 class="product__item__title">{{item.name}}</h4>

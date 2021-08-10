@@ -18,7 +18,14 @@ export const useCommonCartEffect = (shopId) => {
   // 获取对应商铺内的进入购物车的所有商品
   const productList = computed(() => {
     const productList = cartList[shopId]?.productList || {}
-    return productList
+    const notEmptyProductList = {}
+    for (const i in productList) {
+      const product = productList[i]
+      if (product.count > 0) {
+        notEmptyProductList[i] = product
+      }
+    }
+    return notEmptyProductList
   })
 
   // 获取对应商铺的商铺名称
@@ -48,11 +55,19 @@ export const useCommonCartEffect = (shopId) => {
     return result
   })
 
+  // 将添加进购物车中的商品删除。shopId 为商店 ID
+  const cleanCartProducts = (shopId) => {
+    store.commit('cleanCartProducts', {
+      shopId
+    })
+  }
+
   return {
     cartList,
     shopName,
     productList,
     calculations,
-    changeCartItemInfo
+    changeCartItemInfo,
+    cleanCartProducts
   }
 }
