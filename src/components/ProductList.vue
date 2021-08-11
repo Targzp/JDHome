@@ -1,5 +1,5 @@
 <template>
-    <div class="product">
+    <div class="product" v-if="calculations.total">
         <div class="product__title">{{shopName}}</div>
         <div class="product__list">
             <template v-for="item in productList" :key="item._id">
@@ -20,25 +20,27 @@
 
 <script>
 import { useRoute } from 'vue-router'
-import { useCommonCartEffect } from '../../effects/cartEffects'
+import { useCommonCartEffect } from '../effects/cartEffects'
 export default {
   name: 'ProductList',
-  setup () {
+  props: ['id'],
+  setup (props) {
     const route = useRoute()
-    const shopId = route.params.id
-    const { productList, shopName } = useCommonCartEffect(shopId)
+    const shopId = route.params.id || props.id
+    const { productList, shopName, calculations } = useCommonCartEffect(shopId)
 
     return {
       productList,
-      shopName
+      shopName,
+      calculations
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../../style/virables.scss';
-@import '../../style/mixins.scss';
+@import '../style/virables.scss';
+@import '../style/mixins.scss';
 .product {
     margin: .16rem .18rem 0 .18rem;
     background-color: $bgColor;

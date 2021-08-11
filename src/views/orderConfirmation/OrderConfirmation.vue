@@ -8,7 +8,7 @@
 
 <script>
 import TopArea from './TopArea'
-import ProductList from './ProductList.vue'
+import ProductList from '../../components/ProductList.vue'
 import Order from './Order.vue'
 export default {
   name: 'OrderConfirmation',
