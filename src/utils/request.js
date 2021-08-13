@@ -22,6 +22,22 @@ export const post = (url, data = {}) => {
   })
 }
 
+export const patch = (url, data = {}) => {
+  return new Promise((resolve, reject) => {
+    instance.patch(url, data,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => {
+        resolve(res.data)
+      }, err => {
+        reject(err)
+      })
+  })
+}
+
 export const get = (url, params) => {
   return new Promise((resolve, reject) => {
     instance.get(url, { params })

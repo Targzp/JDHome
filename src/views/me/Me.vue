@@ -10,7 +10,9 @@
       </div>
     </div>
     <div class="options">
-      <div class="options__location">
+      <div
+      class="options__location"
+      @click="handleMyLocation">
         <div class="options__location__icon iconfont">&#xe8d4;</div>
         <span class="options__location__desc">我的地址</span>
         <div class="options__location__enter iconfont">&#xe653;</div>
@@ -72,6 +74,18 @@ const useLoginOutEffect = () => {
   }
 }
 
+// 跳转管理地址页面相关逻辑
+const useMyLocationEffect = () => {
+  const router = useRouter()
+  const handleMyLocation = () => {
+    router.push({ name: 'MyAddressList' })
+  }
+
+  return {
+    handleMyLocation
+  }
+}
+
 export default {
   name: 'Me',
   components: {
@@ -82,12 +96,14 @@ export default {
     const { showToast, toastMessage, changeToast } = useToastEffect()
     const { username, userId } = useUserInfoEffect(changeToast)
     const { handleLoginOut } = useLoginOutEffect()
+    const { handleMyLocation } = useMyLocationEffect()
     return {
       username,
       userId,
       showToast,
       toastMessage,
-      handleLoginOut
+      handleLoginOut,
+      handleMyLocation
     }
   }
 }

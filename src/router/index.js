@@ -27,6 +27,16 @@ const routes = [
     component: () => import('../views/me/Me.vue')
   },
   {
+    path: '/myAddressList',
+    name: 'MyAddressList',
+    component: () => import('../views/myaddresslist/MyAddressList.vue')
+  },
+  {
+    path: '/upsertAddress/:id?',
+    name: 'UpsertAddress',
+    component: () => import('../views/upsertaddress/UpsertAddress.vue')
+  },
+  {
     path: '/orderconfirmation/:id',
     name: 'OrderConfirmation',
     component: () => import('../views/orderConfirmation/OrderConfirmation.vue')

@@ -12,7 +12,7 @@ const getLocalCartList = () => {
 
 export default createStore({
   state: {
-    cartList: getLocalCartList()
+    cartList: getLocalCartList(),
     // shopId: {
     //    shopName: '沃尔玛'，
     //    productList: {
@@ -25,6 +25,7 @@ export default createStore({
     //     ...
     //   }
     // }
+    addressList: []
   },
   mutations: {
     // 添加商品进入购物车中，数量根据 num 值增减。且一旦增加该商品就为选中状态，最后数量不能小于 0
@@ -77,6 +78,10 @@ export default createStore({
       const shopInfo = state.cartList[shopId]
       shopInfo.shopName = shopName
       setLocalCartList(state)
+    },
+    changeAddressList (state, payload) {
+      const { data } = payload
+      state.addressList = data
     }
   },
   actions: {
