@@ -112,9 +112,8 @@ export default {
         height: .48rem;
         margin: 0 .4rem .16rem .4rem;
         background: #F9F9F9;
-        border: 1px solid rgba(0,0,0,0.10);
-        border-radius: 6px;
-        border-radius: 6px;
+        border: .01rem solid rgba(0,0,0,0.10);
+        border-radius: .06rem;
         &__content{
             /* 与之前 input 框不同的写法 */
             box-sizing: border-box;

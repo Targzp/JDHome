@@ -85,8 +85,8 @@ export default {
     height: 100%;
     box-sizing: border-box;
     padding-left: .46rem;
-    border: 0px;
-    border-radius: 16px;
+    border: .01rem;
+    border-radius: .16rem;
     background: $search-bgColor;
     &:focus{
       outline: none;

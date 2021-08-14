@@ -7,7 +7,7 @@
             <span class="header__info">{{addressId?'编辑':'新建'}}收货地址</span>
             <span
             class="header__new"
-            @click="handleSendAddressInfo()">保存</span>
+            @click="handleSendAddressInfo">保存</span>
         </div>
         <div class="addressinfo">
             <div class="addressinfo__item">

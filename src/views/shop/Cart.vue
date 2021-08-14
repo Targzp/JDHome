@@ -155,7 +155,7 @@ export default {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 50px;
+  bottom: .5rem;
   top: 0;
   background: rgba(0, 0, 0, .5);
   z-index: 1;
@@ -291,9 +291,9 @@ export default {
         }
     }
     &__number{
-        flex: .5;
         align-self: center;
         font-size: .14rem;
+        margin-right: .15rem;
         &__minus, &__plus{
             display: inline-block;
             width: .15rem;

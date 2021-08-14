@@ -161,7 +161,7 @@ export default {
     &__item {
         display: flex;
         padding: .12rem 0;
-        border-bottom: 1px solid $content-bgColor;
+        border-bottom: .01rem solid $content-bgColor;
         &__img {
             width: .68rem;
             height: .68rem;

@@ -114,8 +114,8 @@ export default {
             height: .48rem;
             margin: 0 .4rem .16rem .4rem;
             background: #F9F9F9;
-            border: 1px solid rgba(0,0,0,0.10);
-            border-radius: 6px;
+            border: .01rem solid rgba(0,0,0,0.10);
+            border-radius: .06rem;
             &__content{
                 box-sizing: border-box;
                 width: 100%;
@@ -137,8 +137,8 @@ export default {
             text-align: center;
             color: $bgColor;
             background: $buttonColor;
-            box-shadow: 0 4px 8px 0 rgba(0,145,255,0.32);
-            border-radius: 4px;
+            box-shadow: 0 .04rem .08rem 0 rgba(0,145,255,0.32);
+            border-radius: .04rem;
         }
         &__register-link{
             text-align: center;

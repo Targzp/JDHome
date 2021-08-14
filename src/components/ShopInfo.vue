@@ -34,7 +34,7 @@ export default {
     flex: 1;
     padding-bottom: .12rem;
     &--bordered{
-      border-bottom: 1px solid $content-bgColor;
+      border-bottom: .01rem solid $content-bgColor;
     }
     &__title{
       color: $content-font-color;

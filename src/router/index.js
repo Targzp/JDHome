@@ -37,7 +37,12 @@ const routes = [
     component: () => import('../views/upsertaddress/UpsertAddress.vue')
   },
   {
-    path: '/orderconfirmation/:id',
+    path: '/chooseAddress/:id',
+    name: 'ChooseAddress',
+    component: () => import('../views/chooseaddress/ChooseAddress.vue')
+  },
+  {
+    path: '/orderconfirmation/:id/:a_id?',
     name: 'OrderConfirmation',
     component: () => import('../views/orderConfirmation/OrderConfirmation.vue')
   },

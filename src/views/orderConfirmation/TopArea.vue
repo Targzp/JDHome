@@ -4,12 +4,16 @@
             确认订单
         </div>
         <div class="top">
-            <div class="top__receiver">
+            <div
+            class="top__receiver"
+            @click="handleChooseAddress">
                 <div class="top__receiver__title">收货地址</div>
-                <div class="top__receiver__address">北京理工大学国防科技园2号楼10层</div>
+                <div class="top__receiver__address">
+                    {{address?.city}}{{address?.department}}{{address?.houseNumber}}
+                </div>
                 <div class="top__receiver__info">
-                    <span class="top__receiver__info__name">瑶妹(先生)</span>
-                    <span class="top__receiver__info__tel">18911024266</span>
+                    <span class="top__receiver__info__name">{{address?.name}}</span>
+                    <span class="top__receiver__info__tel">{{address?.phone}}</span>
                 </div>
                 <div class="iconfont top__receiver__enter">&#xe653;</div>
             </div>
@@ -17,13 +21,34 @@
 </template>
 
 <script>
+import { useRoute, useRouter } from 'vue-router'
 import { useBackRouterEffect } from '../../effects/backEffects'
+import { useAddressListEffect } from '../../components/Address.vue'
+
+// 跳转选择地址页面相关逻辑
+const useChooseAddressEffect = (shopId) => {
+  const router = useRouter()
+  const handleChooseAddress = () => {
+    router.push(`/chooseAddress/${shopId}`)
+  }
+  return {
+    handleChooseAddress
+  }
+}
+
 export default {
   name: 'TopArea',
   setup () {
+    const route = useRoute()
+    const shopId = route.params.id
+    const addressId = route.params.a_id
     const { handleBackClick } = useBackRouterEffect()
+    const { address } = useAddressListEffect(addressId)
+    const { handleChooseAddress } = useChooseAddressEffect(shopId)
     return {
-      handleBackClick
+      address,
+      handleBackClick,
+      handleChooseAddress
     }
   }
 }
