@@ -1,30 +1,43 @@
 <template>
   <div class="wrapper">
     <div class="title">我的全部购物车</div>
-    <ProductList v-for="(id,index) in idList" :key="index" :id="id"/>
+    <template v-if="haveProducts">
+      <ProductList v-for="(id,index) in idList" :key="index" :id="id"/>
+    </template>
+    <div class="status" v-else>当前购物车为空</div>
   </div>
   <Docker :currentIndex="1"/>
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
+import { ref, reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import Docker from '../../components/Docker.vue'
 import ProductList from '../../components/ProductList.vue'
+import { useCommonCartEffect } from '../../effects/cartEffects.js'
 
 // 获取所有商店购物车的逻辑
 const useCartListEffect = () => {
   const store = useStore()
   const cartList = store.state.cartList
   const allShopId = reactive({ idList: [] })
+  const haveProducts = ref(false)
   for (const id in cartList) {
     allShopId.idList.push(id)
   }
 
   const { idList } = toRefs(allShopId)
 
+  idList.value.forEach(id => {
+    const { calculations } = useCommonCartEffect(id)
+    if (calculations.value.total > 0) {
+      haveProducts.value = true
+    }
+  })
+
   return {
-    idList
+    idList,
+    haveProducts
   }
 }
 
@@ -35,9 +48,10 @@ export default {
     ProductList
   },
   setup () {
-    const { idList } = useCartListEffect()
+    const { idList, haveProducts } = useCartListEffect()
     return {
-      idList
+      idList,
+      haveProducts
     }
   }
 }
@@ -67,5 +81,12 @@ export default {
     color: $content-font-color;
     background: $bgColor;
     margin: 0 -.18rem;
+}
+
+.status {
+  font-size: .14rem;
+  text-align: center;
+  color: $light-font-color;
+  margin-top: .16rem;
 }
 </style>
